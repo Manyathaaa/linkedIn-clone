@@ -14,3 +14,5 @@ yarn-error.log
 *.bak
 *.swp
 *.pid
+
+client/.next
