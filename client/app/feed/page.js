@@ -24,7 +24,7 @@ export default function FeedPage() {
 
   const fetchPosts = async () => {
     try {
-      const response = await apiClient.get("/v1/posts/");
+      const response = await apiClient.get("/posts/");
       setPosts(response.data.posts);
     } catch (error) {
       setError("Failed to load posts");

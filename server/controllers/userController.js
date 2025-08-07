@@ -23,7 +23,15 @@ export const getuserController = async (req, res) => {
     return res.status(200).send({
       success: true,
       message: "Got user successfully",
-      user,
+      user: {
+        _id: user._id,
+        name: user.username, // Map username to name for frontend compatibility
+        username: user.username,
+        email: user.email,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     });
   } catch (error) {
     console.log("error", error);
@@ -44,17 +52,15 @@ export const UpdateUserController = async (req, res) => {
       return res.status(500).send({
         success: false,
         message: "user not found",
-        error,
       });
     }
 
     //update
     const { name, bio } = req.body;
-    if (name) user.name = name;
+    if (name) user.username = name; // Update username field since that's what the model has
     if (bio) user.bio = bio;
 
     //save
-
     await user.save();
     return res.status(200).send({
       success: true,
@@ -72,8 +78,42 @@ export const UpdateUserController = async (req, res) => {
 
 import Post from "../models/postModel.js";
 
+// Get user profile by ID
+export const getUserById = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User retrieved successfully",
+      user: {
+        _id: user._id,
+        name: user.username, // Map username to name for frontend compatibility
+        username: user.username,
+        email: user.email,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    });
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get user",
+    });
+  }
+};
+
 // Get all posts by a specific user
-export const getUser = async (req, res) => {
+export const getUserPosts = async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id })
       .populate("author", "username")

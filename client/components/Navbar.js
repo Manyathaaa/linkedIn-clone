@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { LogOut, User, Home } from 'lucide-react';
+import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { LogOut, User, Home } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/login';
+    window.location.href = "/login";
   };
 
   if (!user) return null;
@@ -25,19 +25,29 @@ export default function Navbar() {
               Community
             </Link>
             <div className="hidden md:flex space-x-4">
-              <Link href="/feed" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600">
+              <Link
+                href="/feed"
+                className="flex items-center space-x-1 text-gray-700 hover:text-blue-600"
+              >
                 <Home size={20} />
                 <span>Feed</span>
               </Link>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
-            <Link href={`/profile/${user.id}`} className="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg">
+            <Link
+              href={`/profile/${user._id}`}
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
               <Avatar className="h-8 w-8">
-                <AvatarFallback>{user.username?.[0]?.toUpperCase()}</AvatarFallback>
+                <AvatarFallback>
+                  {user.username?.[0]?.toUpperCase()}
+                </AvatarFallback>
               </Avatar>
-              <span className="hidden md:block text-sm font-medium">{user.username}</span>
+              <span className="hidden md:block text-sm font-medium">
+                {user.username}
+              </span>
             </Link>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               <LogOut size={16} />

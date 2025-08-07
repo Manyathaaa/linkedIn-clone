@@ -19,7 +19,7 @@ export default function CreatePost({ onPostCreated }) {
 
     setLoading(true);
     try {
-      const response = await apiClient.post("/v1/posts/create", { content });
+      const response = await apiClient.post("/posts/create", { content });
       setContent("");
       if (onPostCreated) {
         onPostCreated(response.data);
