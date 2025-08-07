@@ -1,4 +1,4 @@
-import UserModel from "../models/UserModel.js";
+import userModel from "../models/UserModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -80,7 +80,7 @@ export const loginController = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
     user.password = undefined;
