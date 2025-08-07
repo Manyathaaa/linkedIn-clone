@@ -62,7 +62,7 @@ export const loginController = async (req, res) => {
     }
 
     // Find user by email
-    const user = await userModel.findOne({ email });
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(404).send({
         success: false,
@@ -80,11 +80,11 @@ export const loginController = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
     user.password = undefined;
-    res.status(200).send({
+    return res.status(200).send({
       success: true,
       message: "Successful login",
       token,
