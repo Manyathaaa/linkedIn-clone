@@ -1,15 +1,9 @@
 import jwt from "jsonwebtoken";
-import User from "../models/UserModel.js";
+import User from "../models/User.model.js";
 
 export const requireSignIn = async (req, res, next) => {
   try {
-    const token = req.headers["authorization"]?.split(" ")[1];
-    if (!token) {
-      return res.status(401).send({
-        success: false,
-        message: "Token is missing",
-      });
-    }
+    const token = req.headers.authorization;
 
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
