@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://linked-in-clone-green.vercel.app/",
+      "https://linked-in-clone-green.vercel.app",
     ],
     credentials: true,
   })
