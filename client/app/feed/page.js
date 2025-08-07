@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import CreatePost from '@/components/CreatePost';
-import PostCard from '@/components/PostCard';
-import apiClient from '@/lib/axios';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import CreatePost from "@/components/CreatePost";
+import PostCard from "@/components/PostCard";
+import apiClient from "@/lib/axios";
 
 export default function FeedPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!user) {
-      router.push('/login');
+      router.push("/login");
       return;
     }
     fetchPosts();
@@ -24,17 +24,18 @@ export default function FeedPage() {
 
   const fetchPosts = async () => {
     try {
-      const response = await apiClient.get('/posts');
-      setPosts(response.data);
+      const response = await apiClient.get("/v1/posts/");
+      setPosts(response.data.posts);
     } catch (error) {
-      setError('Failed to load posts');
-      console.error('Error fetching posts:', error);
+      setError("Failed to load posts");
+      console.error("Error fetching posts:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handlePostCreated = (newPost) => {
+    console.log("New post created:", newPost);
     setPosts([newPost, ...posts]);
   };
 
@@ -43,7 +44,9 @@ export default function FeedPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Community Feed</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Community Feed
+        </h1>
         <p className="text-gray-600">Share your thoughts with the community</p>
       </div>
 
@@ -60,12 +63,14 @@ export default function FeedPage() {
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No posts yet. Be the first to share something!</p>
+          <p className="text-gray-500 text-lg">
+            No posts yet. Be the first to share something!
+          </p>
         </div>
       ) : (
         <div>
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post._id} post={post} />
           ))}
         </div>
       )}

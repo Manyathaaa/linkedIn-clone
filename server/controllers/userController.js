@@ -69,3 +69,19 @@ export const UpdateUserController = async (req, res) => {
     });
   }
 };
+
+import Post from "../models/postModel.js";
+
+// Get all posts by a specific user
+export const getUser = async (req, res) => {
+  try {
+    const posts = await Post.find({ author: req.params.id })
+      .populate("author", "username")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error("Error fetching user posts:", err);
+    res.status(500).json({ message: "Failed to get posts" });
+  }
+};

@@ -1,6 +1,5 @@
 // server/controllers/postController.js
 import Post from "../models/postModel.js";
-import User from "../models/UserModel.js";
 
 // Create a new post
 export const createPostController = async (req, res) => {
@@ -21,10 +20,16 @@ export const createPostController = async (req, res) => {
 
     await newPost.save();
 
+    // 👇 Populate author field (e.g., username) before sending it back
+    const populatedPost = await Post.findById(newPost._id).populate(
+      "author",
+      "username"
+    );
+
     return res.status(201).json({
       success: true,
       message: "Post created successfully",
-      post: newPost,
+      post: populatedPost, // return populated version
     });
   } catch (error) {
     console.error("Create post error:", error);

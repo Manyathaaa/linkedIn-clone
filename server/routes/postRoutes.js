@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/create", requireSignIn, createPostController);
 
 // Public route to get all posts
-router.get("/all", getAllPostsController);
+router.get("/", getAllPostsController);
 
 export default router;
