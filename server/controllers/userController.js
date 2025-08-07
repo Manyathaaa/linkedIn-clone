@@ -33,3 +33,39 @@ export const getuserController = async (req, res) => {
     });
   }
 };
+
+export const UpdateUserController = async (req, res) => {
+  try {
+    //find user
+    const user = await UserModel.findById({ _id: req.user.id });
+
+    //validation
+    if (!user) {
+      return res.status(500).send({
+        success: false,
+        message: "user not found",
+        error,
+      });
+    }
+
+    //update
+    const { name, bio } = req.body;
+    if (name) user.name = name;
+    if (bio) user.bio = bio;
+
+    //save
+
+    await user.save();
+    return res.status(200).send({
+      success: true,
+      message: "saved successfully",
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send({
+      success: false,
+      message: "update failure",
+      error,
+    });
+  }
+};
