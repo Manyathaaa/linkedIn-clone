@@ -46,7 +46,7 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      await apiClient.post("/v1/auth/register", formData);
+      await apiClient.post("/auth/register", formData);
       router.push("/login?message=Registration successful! Please sign in.");
     } catch (error) {
       setError(

@@ -45,7 +45,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await apiClient.post("/v1/auth/login", formData);
+      const response = await apiClient.post("/auth/login", formData);
       const { user: userData, token } = response.data;
       login(userData, token);
       router.push("/feed");
